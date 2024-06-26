@@ -13,4 +13,8 @@ public class robotconfig {
     // Intake Motor
 
     public static String intake = "intakeMotor";
+
+    // Conveyor Servo
+
+    public static String conveyorServo = "conveyorServo";
 }

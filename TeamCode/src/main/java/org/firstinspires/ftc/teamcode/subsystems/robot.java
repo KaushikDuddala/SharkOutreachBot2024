@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -9,6 +10,7 @@ public class robot {
 
     public drivetrain dt;
     public intake intake;
+    public conveyor conveyor;
 
 
     public robot(HardwareMap hwmap)
@@ -31,6 +33,13 @@ public class robot {
         DcMotor intakeMotor = hwmap.dcMotor.get(robotconfig.intake);
 
         this.intake = new intake(intakeMotor);
+
+        // Conveyor
+
+        CRServo conveyorServo = hwmap.crservo.get(robotconfig.conveyorServo);
+        this.conveyor = new conveyor(conveyorServo);
+
+
 
 
     }

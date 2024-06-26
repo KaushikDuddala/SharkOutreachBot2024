@@ -13,6 +13,9 @@ public class MainDrive extends LinearOpMode {
 
     public static boolean reverseIntake = false;
     public static double intakeLimitSpeed = 0.7;
+    public static double conveyorSpeed = 0.3;
+    public static boolean conveyorReversed = false;
+    public static double conveyorStationaryPosition = 0.00;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -27,14 +30,13 @@ public class MainDrive extends LinearOpMode {
         if (isStopRequested()) return;
 
         while (opModeIsActive()) {
-21
             pgp.copy(cgp);
 
 
             // Drivetrain
-            double y = -gamepad1.left_stick_y;
-            double x = gamepad1.left_stick_x * 1.1;
-            double rx = gamepad1.right_stick_x;
+            double y = -cgp.left_stick_y;
+            double x = cgp.left_stick_x * 1.1;
+            double rx = cgp.right_stick_x;
 
             robot.dt.drive(x, y, rx);
 
@@ -42,6 +44,11 @@ public class MainDrive extends LinearOpMode {
             double intakePower = Math.min(cgp.right_trigger, intakeLimitSpeed) - Math.max(cgp.left_trigger, -intakeLimitSpeed);
 
             robot.intake.run(reverseIntake ? -intakePower : intakePower);
+
+            // Conveyor
+
+            double conveyorPower = (conveyorReversed ? -1 : 1) * ((cgp.left_bumper ? -conveyorSpeed : 0) + (cgp.right_bumper ? conveyorSpeed : 0)) + conveyorStationaryPosition;
+            robot.conveyor.run(conveyorPower);
 
             cgp.copy(gamepad1);
 
