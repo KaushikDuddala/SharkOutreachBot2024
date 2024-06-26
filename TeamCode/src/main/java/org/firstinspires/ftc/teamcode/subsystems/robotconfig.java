@@ -9,4 +9,8 @@ public class robotconfig {
     public static String BLMotor = "BLMotor";
     public static String FRMotor = "FRMotor";
     public static String BRMotor = "BRMotor";
+
+    // Intake Motor
+
+    public static String intake = "intakeMotor";
 }

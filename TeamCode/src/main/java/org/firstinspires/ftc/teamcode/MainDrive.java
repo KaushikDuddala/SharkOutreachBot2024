@@ -11,6 +11,8 @@ import org.firstinspires.ftc.teamcode.subsystems.robot;
 @TeleOp
 public class MainDrive extends LinearOpMode {
 
+    public static boolean reverseIntake = false;
+    public static double intakeLimitSpeed = 0.7;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -25,7 +27,7 @@ public class MainDrive extends LinearOpMode {
         if (isStopRequested()) return;
 
         while (opModeIsActive()) {
-
+21
             pgp.copy(cgp);
 
 
@@ -39,6 +41,7 @@ public class MainDrive extends LinearOpMode {
             // Intake
             double intakePower = Math.min(cgp.right_trigger, intakeLimitSpeed) - Math.max(cgp.left_trigger, -intakeLimitSpeed);
 
+            robot.intake.run(reverseIntake ? -intakePower : intakePower);
 
             cgp.copy(gamepad1);
 
