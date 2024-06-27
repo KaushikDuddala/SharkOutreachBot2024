@@ -27,7 +27,9 @@ public class MainDrive extends LinearOpMode {
         Gamepad cgp = new Gamepad();
         Gamepad pgp = new Gamepad();
 
+        double shooterTargetPos = 0;
         robot robot = new robot(hardwareMap);
+        long timeSinceLastShooterMove = System.currentTimeMillis();
 
         waitForStart();
 
@@ -60,6 +62,21 @@ public class MainDrive extends LinearOpMode {
             // Shooter
             double shooterPower = (shooterReversed ? -1 : 1) * ( (cgp.dpad_up ? shooterSpeed : 0) + (cgp.dpad_down ? -shooterSpeed : 0));
 
+            // Turret
+
+            if(System.currentTimeMillis() - timeSinceLastShooterMove > 250)
+            {
+                if(cgp.b)
+                {
+                    shooterTargetPos -= 0.1;
+                }
+                else if(cgp.x)
+                {
+                    shooterTargetPos += 0.1;
+                }
+                robot.turret.setTarget(shooterTargetPos);
+            }
+
 
             // Multi-item buttons
 
@@ -77,6 +94,8 @@ public class MainDrive extends LinearOpMode {
             robot.conveyor.run(conveyorPower);
             robot.feed.run(feederPower);
             robot.shooter.run(shooterPower);
+            robot.turret.trackPos();
+            robot.turret.calc();
 
             cgp.copy(gamepad1);
 

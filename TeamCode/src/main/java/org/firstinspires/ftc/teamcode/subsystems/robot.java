@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -13,6 +14,7 @@ public class robot {
     public conveyor conveyor;
     public feeder feed;
     public shooter shooter;
+    public turret turret;
 
 
     public robot(HardwareMap hwmap)
@@ -51,6 +53,10 @@ public class robot {
         DcMotor shooterMotor = hwmap.dcMotor.get(robotconfig.shooterMotor);
         shooterMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         this.shooter = new shooter(shooterMotor);
+
+        CRServo axon = hwmap.crservo.get(robotconfig.aimingServo);
+        AnalogInput axonInput = hwmap.analogInput.get(robotconfig.axonAnalog);
+        this.turret = new turret(axon, axonInput);
 
     }
 }
