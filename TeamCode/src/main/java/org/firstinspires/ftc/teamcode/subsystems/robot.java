@@ -11,6 +11,8 @@ public class robot {
     public drivetrain dt;
     public intake intake;
     public conveyor conveyor;
+    public feeder feed;
+    public shooter shooter;
 
 
     public robot(HardwareMap hwmap)
@@ -39,8 +41,16 @@ public class robot {
         CRServo conveyorServo = hwmap.crservo.get(robotconfig.conveyorServo);
         this.conveyor = new conveyor(conveyorServo);
 
+        // Feed
 
+        CRServo feedServo = hwmap.crservo.get(robotconfig.feedingServo);
+        this.feed = new feeder(feedServo);
 
+        // Shooter
+
+        DcMotor shooterMotor = hwmap.dcMotor.get(robotconfig.shooterMotor);
+        shooterMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        this.shooter = new shooter(shooterMotor);
 
     }
 }

@@ -17,4 +17,17 @@ public class robotconfig {
     // Conveyor Servo
 
     public static String conveyorServo = "conveyorServo";
+
+    // Feed Servo
+
+    public static String feedingServo = "feedServo";
+
+    // Shooter motor
+
+    public static String shooterMotor = "shooter";
+
+    // Aiming Servo
+    public static String aimingServo = "aimServo";
+    public static String axonAnalog = "axonAnalog";
+
 }
