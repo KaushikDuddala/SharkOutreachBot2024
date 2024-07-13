@@ -10,6 +10,7 @@ public class turret {
 
     private double axonPos = 0.00;
 
+    private double power = 0;
     private int stage = 1;
     private int previousStage = 1;
 
@@ -17,26 +18,25 @@ public class turret {
     private double technicalPos = 0.00;
     private double targetPos = 0.00;
 
-    private double kP = 0.2, kI = 0, kD = 0;
+    private PIDController pid;
 
-    private PIDController pid = new PIDController(kP, kI, kD);
-
-    public turret(CRServo axonServo, AnalogInput axonPosInput)
+    public turret(CRServo axonServo1, AnalogInput axonPosInput1, double kp, double ki, double kd)
     {
-        axonServo = axonServo;
-        axonPosInput = axonPosInput;
+        axonServo = axonServo1;
+        axonPosInput = axonPosInput1 ;
         axonPos = axonPosInput.getVoltage() / 3.3;
         technicalPos = axonPos;
+        pid = new PIDController(kp, ki, kd);
     }
 
     public void trackPos()
     {
-        axonPos = axonPosInput.getVoltage() / 3.3;
-        if(axonPos <= 0.3)
+        double axonTempPos = axonPosInput.getVoltage() / 3.3;
+        if(axonTempPos <= 0.3)
         {
             stage = 1;
         }
-        else if(axonPos > 0.3 && axonPos < 0.6)
+        else if(axonTempPos > 0.3 && axonTempPos < 0.6)
         {
             stage = 2;
         }
@@ -54,13 +54,22 @@ public class turret {
             fullRots--;
         }
 
+
         previousStage = stage;
-        technicalPos = fullRots + axonPos;
+        technicalPos = fullRots + axonTempPos;
     }
 
     public void calc()
     {
-        double power = pid.calculate(technicalPos, targetPos);
+        power = pid.calculate(technicalPos, targetPos);
+        if(power < 0)
+        {
+            power = Math.max(power, -1);
+        }
+        else
+        {
+            power = Math.min(power, 1);
+        }
         axonServo.setPower(power);
     }
 
@@ -73,4 +82,8 @@ public class turret {
     {
         targetPos = target;
     }
+    public int returnStage() {return stage;}
+    public int returnFullRots() { return fullRots; }
+    public double returnActPos() { return technicalPos; }
+    public double returnPower() { return power; }
 }

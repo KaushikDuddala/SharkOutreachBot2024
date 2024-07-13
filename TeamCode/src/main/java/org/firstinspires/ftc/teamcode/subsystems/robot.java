@@ -17,11 +17,11 @@ public class robot {
     public turret turret;
 
 
-    public robot(HardwareMap hwmap)
+    public robot(HardwareMap hwmap, double kp, double ki, double kd)
     {
 
         // Drivetrain
-
+/*
         DcMotor FLMotor = hwmap.dcMotor.get(robotconfig.FLMotor);
         DcMotor BLMotor = hwmap.dcMotor.get(robotconfig.BLMotor);
         DcMotor FRMotor = hwmap.dcMotor.get(robotconfig.FRMotor);
@@ -31,13 +31,13 @@ public class robot {
         BRMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         this.dt = new drivetrain(FLMotor, BLMotor, FRMotor, BRMotor);
-
+*/
         // Intake
-
+/*
         DcMotor intakeMotor = hwmap.dcMotor.get(robotconfig.intake);
 
         this.intake = new intake(intakeMotor);
-
+*/
         // Conveyor
 
         CRServo conveyorServo = hwmap.crservo.get(robotconfig.conveyorServo);
@@ -56,7 +56,7 @@ public class robot {
 
         CRServo axon = hwmap.crservo.get(robotconfig.aimingServo);
         AnalogInput axonInput = hwmap.analogInput.get(robotconfig.axonAnalog);
-        this.turret = new turret(axon, axonInput);
+        this.turret = new turret(axon, axonInput, kp, ki, kd);
 
     }
 }

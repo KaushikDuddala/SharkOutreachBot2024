@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -8,6 +9,7 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.subsystems.robot;
 
+@Config
 @TeleOp
 public class MainDrive extends LinearOpMode {
 
@@ -21,14 +23,19 @@ public class MainDrive extends LinearOpMode {
     public static double shooterSpeed = 0.7;
     public static boolean shooterReversed = false;
 
+    public static double shooterTargetPos = 0.0;
+
+    public static double kp = -2.5, ki = 0, kd = 0;
+
+    public static double gear1 = 100, gear2 = 30;
+
     @Override
     public void runOpMode() throws InterruptedException {
 
         Gamepad cgp = new Gamepad();
         Gamepad pgp = new Gamepad();
 
-        double shooterTargetPos = 0;
-        robot robot = new robot(hardwareMap);
+        robot robot = new robot(hardwareMap, kp, ki, kd);
         long timeSinceLastShooterMove = System.currentTimeMillis();
 
         waitForStart();
@@ -64,7 +71,7 @@ public class MainDrive extends LinearOpMode {
 
             // Turret
 
-            if(System.currentTimeMillis() - timeSinceLastShooterMove > 250)
+            if(System.currentTimeMillis() - timeSinceLastShooterMove > 1500)
             {
                 if(cgp.b)
                 {
@@ -74,7 +81,8 @@ public class MainDrive extends LinearOpMode {
                 {
                     shooterTargetPos += 0.1;
                 }
-                robot.turret.setTarget(shooterTargetPos);
+                robot.turret.setTarget(shooterTargetPos * (gear1 / gear2));
+                timeSinceLastShooterMove = System.currentTimeMillis();
             }
 
 
@@ -89,8 +97,8 @@ public class MainDrive extends LinearOpMode {
 
             // Convey final variables and commands to robot
 
-            robot.dt.drive(x, y, rx);
-            robot.intake.run(reverseIntake ? -intakePower : intakePower);
+            //robot.dt.drive(x, y, rx);
+            //robot.intake.run(reverseIntake ? -intakePower : intakePower);
             robot.conveyor.run(conveyorPower);
             robot.feed.run(feederPower);
             robot.shooter.run(shooterPower);
@@ -99,8 +107,13 @@ public class MainDrive extends LinearOpMode {
 
             cgp.copy(gamepad1);
 
-
-
+            telemetry.addData("PositionAxon", robot.turret.getPos());
+            telemetry.addData("AxonTarget", shooterTargetPos);
+            telemetry.addData("AxonStage", robot.turret.returnStage());
+            telemetry.addData("axonFullRots", robot.turret.returnFullRots());
+            telemetry.addData("TechnicalPos", robot.turret.returnActPos());
+            telemetry.addData("axonPower", robot.turret.returnPower());
+            telemetry.update();
         }
     }
 }
