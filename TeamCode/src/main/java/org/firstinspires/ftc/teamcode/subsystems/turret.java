@@ -31,12 +31,12 @@ public class turret {
 
     public void trackPos()
     {
-        double axonTempPos = axonPosInput.getVoltage() / 3.3;
-        if(axonTempPos <= 0.3)
+        axonPos = axonPosInput.getVoltage() / 3.3;
+        if(axonPos <= 0.3)
         {
             stage = 1;
         }
-        else if(axonTempPos > 0.3 && axonTempPos < 0.6)
+        else if(axonPos > 0.3 && axonPos < 0.6)
         {
             stage = 2;
         }
@@ -56,7 +56,7 @@ public class turret {
 
 
         previousStage = stage;
-        technicalPos = fullRots + axonTempPos;
+        technicalPos = fullRots + axonPos;
     }
 
     public void calc()
@@ -84,6 +84,6 @@ public class turret {
     }
     public int returnStage() {return stage;}
     public int returnFullRots() { return fullRots; }
-    public double returnActPos() { return technicalPos; }
+    public double returnActPos() { return axonPos; }
     public double returnPower() { return power; }
 }
