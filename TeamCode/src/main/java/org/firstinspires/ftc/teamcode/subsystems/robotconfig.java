@@ -5,10 +5,10 @@ public class robotconfig {
 
     // DriveTrain Motors
 
-    public static String FLMotor = "FLMotor";
-    public static String BLMotor = "BLMotor";
-    public static String FRMotor = "FRMotor";
-    public static String BRMotor = "BRMotor";
+    public static String FLMotor = "front_left";
+    public static String BLMotor = "back_left";
+    public static String FRMotor = "front_right";
+    public static String BRMotor = "back_right";
 
     // Intake Motor
 

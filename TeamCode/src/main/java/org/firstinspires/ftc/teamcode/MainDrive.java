@@ -18,10 +18,11 @@ public class MainDrive extends LinearOpMode {
     public static double conveyorSpeed = 0.3;
     public static boolean conveyorReversed = false;
     public static double conveyorStationaryPosition = 0.00;
-    public static double feederSpeed = 0.6;
-    public static boolean feederReversed = false;
-    public static double shooterSpeed = 0.7;
+    public static double feederSpeed = 1.0;
+    public static boolean feederReversed = true;
+    public static double shooterSpeed = 1.0;
     public static boolean shooterReversed = false;
+    public static double drivetrainLimit = 0.7;
 
     public static double shooterTargetPos = 0.0;
 
@@ -47,9 +48,9 @@ public class MainDrive extends LinearOpMode {
 
 
             // Drivetrain
-            double y = -cgp.left_stick_y;
-            double x = cgp.left_stick_x * 1.1;
-            double rx = cgp.right_stick_x;
+            double y = cgp.left_stick_y;
+            double x = -cgp.left_stick_x * 1.1;
+            double rx = -cgp.right_stick_x;
 
             // Intake
             double intakePower = Math.min(cgp.right_trigger, intakeLimitSpeed) - Math.max(cgp.left_trigger, -intakeLimitSpeed);
@@ -71,7 +72,7 @@ public class MainDrive extends LinearOpMode {
 
             // Turret
 
-            if(System.currentTimeMillis() - timeSinceLastShooterMove > 1500)
+            if(System.currentTimeMillis() - timeSinceLastShooterMove > 250)
             {
                 if(cgp.b)
                 {
@@ -97,8 +98,8 @@ public class MainDrive extends LinearOpMode {
 
             // Convey final variables and commands to robot
 
-            //robot.dt.drive(x, y, rx);
-            //robot.intake.run(reverseIntake ? -intakePower : intakePower);
+            robot.dt.drive(x * drivetrainLimit, y * drivetrainLimit, rx * drivetrainLimit);
+            robot.intake.run(reverseIntake ? -intakePower : intakePower);
             robot.conveyor.run(conveyorPower);
             robot.feed.run(feederPower);
             robot.shooter.run(shooterPower);
@@ -107,13 +108,6 @@ public class MainDrive extends LinearOpMode {
 
             cgp.copy(gamepad1);
 
-            telemetry.addData("PositionAxon", robot.turret.getPos());
-            telemetry.addData("AxonTarget", shooterTargetPos);
-            telemetry.addData("AxonStage", robot.turret.returnStage());
-            telemetry.addData("axonFullRots", robot.turret.returnFullRots());
-            telemetry.addData("TechnicalPos", robot.turret.returnActPos());
-            telemetry.addData("axonPower", robot.turret.returnPower());
-            telemetry.update();
         }
     }
 }

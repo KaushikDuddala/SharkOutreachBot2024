@@ -21,7 +21,7 @@ public class robot {
     {
 
         // Drivetrain
-/*
+
         DcMotor FLMotor = hwmap.dcMotor.get(robotconfig.FLMotor);
         DcMotor BLMotor = hwmap.dcMotor.get(robotconfig.BLMotor);
         DcMotor FRMotor = hwmap.dcMotor.get(robotconfig.FRMotor);
@@ -31,13 +31,13 @@ public class robot {
         BRMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
         this.dt = new drivetrain(FLMotor, BLMotor, FRMotor, BRMotor);
-*/
+
         // Intake
-/*
+
         DcMotor intakeMotor = hwmap.dcMotor.get(robotconfig.intake);
 
         this.intake = new intake(intakeMotor);
-*/
+
         // Conveyor
 
         CRServo conveyorServo = hwmap.crservo.get(robotconfig.conveyorServo);
